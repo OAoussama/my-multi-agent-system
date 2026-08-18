@@ -8,6 +8,7 @@ import json
 from langchain_ollama import ChatOllama
 
 from src.agents.base_agent import BaseAgent, register_agent
+from src.utils.parsing import extract_json
 
 SYSTEM_PROMPT = """Tu es le CEO Agent de Virtual AI Manager.
 Ton rôle : à partir d'un objectif métier donné par l'entreprise, tu définis
@@ -28,10 +29,11 @@ class CeoAgent(BaseAgent):
 
     def __init__(self, llm=None):
         super().__init__(llm=llm or ChatOllama(
-            model="llama3.2:1b",
-            base_url="http://localhost:11434",
-            temperature=0,
-        ))
+                model="gemma4:e2b",
+                base_url="http://localhost:11434",
+                temperature=0,
+                format="json",
+            ))
 
     def analyze(self, request: dict) -> dict:
         """Extrait l'objectif depuis le payload de la requête standard."""
@@ -48,7 +50,7 @@ class CeoAgent(BaseAgent):
         response = self.llm.invoke(messages)
 
         try:
-            result = json.loads(response.content)
+            result = extract_json(response.content)
         except json.JSONDecodeError:
             result = {"vision": response.content, "strategic_axes": []}
 

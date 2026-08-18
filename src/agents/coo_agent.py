@@ -3,12 +3,8 @@
 Stateless, même logique que le CEO Agent.
 """
 
-import os
 import json
-from langchain_anthropic import ChatAnthropic
-from dotenv import load_dotenv
-
-load_dotenv()
+from langchain_ollama import ChatOllama
 
 SYSTEM_PROMPT = """Tu es le COO Agent de Virtual AI Manager.
 Ton rôle : à partir de la vision et des axes stratégiques du CEO Agent,
@@ -29,9 +25,9 @@ def run_coo_agent(input_data: dict) -> dict:
           "strategic_axes": ["...", "..."]
         }
     """
-    llm = ChatAnthropic(
-        model="claude-sonnet-4-6",
-        api_key=os.getenv("ANTHROPIC_API_KEY"),
+    llm = ChatOllama(
+        model="gemma4:e2b",
+        base_url="http://localhost:11434",
         temperature=0,
     )
 

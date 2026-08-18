@@ -3,7 +3,7 @@
 Version minimale : 2 nœuds (CEO -> COO) pour valider que le flux
 et l'état circulent correctement, avant d'ajouter les 7 autres agents.
 """
-
+from IPython.display import Image, display
 from typing import TypedDict, List
 from langgraph.graph import StateGraph, END
 
@@ -53,6 +53,8 @@ def build_graph():
 # 4. Point d'entrée utilisé par l'API plus tard
 orchestrator = build_graph()
 
+graph_image = display(Image(orchestrator.get_graph().draw_mermaid_png()))
+
 
 # Test rapide en local : python src/core/orchestrator.py
 if __name__ == "__main__":
@@ -64,6 +66,7 @@ if __name__ == "__main__":
     }
 
     final_state = orchestrator.invoke(initial_state)
+    
 
     print("Vision :", final_state["vision"])
     print("Axes stratégiques :", final_state["strategic_axes"])

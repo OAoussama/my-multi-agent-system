@@ -8,6 +8,8 @@ Stateless : aucun état conservé entre deux appels à run().
 from abc import ABC, abstractmethod
 from typing import Dict, Type
 
+from src.core.llm_factory import get_llm
+
 
 class BaseAgent(ABC):
     """Interface commune à tous les agents spécialisés."""
@@ -17,7 +19,7 @@ class BaseAgent(ABC):
 
     def __init__(self, llm=None):
         # llm injecté depuis l'extérieur (llm_factory.py) — pas d'état métier ici
-        self.llm = llm
+        self.llm = llm or get_llm
 
     @abstractmethod
     def analyze(self, request: dict) -> dict:

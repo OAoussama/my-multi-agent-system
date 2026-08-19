@@ -27,13 +27,6 @@ class CeoAgent(BaseAgent):
     name = "ceo"
     role = "Définit la vision, la stratégie et les objectifs de haut niveau"
 
-    def __init__(self, llm=None):
-        super().__init__(llm=llm or ChatOllama(
-                model="gemma4:e2b",
-                base_url="http://localhost:11434",
-                temperature=0,
-                format="json",
-            ))
 
     def analyze(self, request: dict) -> dict:
         """Extrait l'objectif depuis le payload de la requête standard."""

@@ -1,1 +1,69 @@
 .env
+# --- Environnement virtuel ---
+venv/
+.venv/
+env/
+ENV/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# --- Secrets et configuration locale ---
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# --- Tests et couverture ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+coverage.xml
+
+# --- Outils de qualité de code ---
+.ruff_cache/
+.mypy_cache/
+.dmypy.json
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Système d'exploitation ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# --- Logs et fichiers temporaires ---
+*.log
+logs/
+tmp/
+temp/
+
+# --- Base de données locale ---
+*.db
+*.sqlite
+*.sqlite3
+
+# --- LangGraph / LangChain ---
+.langgraph_api/
+.langchain/
+
+# --- Modèles et données volumineuses ---
+models/*.gguf
+models/*.bin
+data/raw/

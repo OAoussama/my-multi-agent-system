@@ -19,7 +19,7 @@ class BaseAgent(ABC):
 
     def __init__(self, llm=None):
         # llm injecté depuis l'extérieur (llm_factory.py) — pas d'état métier ici
-        self.llm = llm or get_llm
+        self.llm = llm or get_llm()
 
     @abstractmethod
     def analyze(self, request: dict) -> dict:

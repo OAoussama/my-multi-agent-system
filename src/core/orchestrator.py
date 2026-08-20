@@ -7,8 +7,9 @@ from IPython.display import Image, display
 from typing import TypedDict, List
 from langgraph.graph import StateGraph, END
 
-from src.agents.ceo_agent import run_ceo_agent
-from src.agents.coo_agent import run_coo_agent
+from src.agents.base_agent import get_agent
+import src.agents.ceo_agent  # noqa: F401
+import src.agents.coo_agent  # noqa: F401
 
 
 # 1. L'état partagé qui circule entre les nœuds du graphe
@@ -16,24 +17,30 @@ class WorkflowState(TypedDict):
     objective: str
     vision: str
     strategic_axes: List[str]
-    operational_plan: List[str]
+    operational_plan: List[dict]
 
 
 # 2. Les nœuds : chaque nœud appelle un agent stateless et met à jour l'état
 def ceo_node(state: WorkflowState) -> dict:
-    result = run_ceo_agent({"objective": state["objective"]})
+    output = get_agent("ceo").run({
+        "company_id": state.get("company_id", ""),
+        "payload": {"objective": state["objective"]},
+    })
     return {
-        "vision": result.get("vision", ""),
-        "strategic_axes": result.get("strategic_axes", []),
+        "vision": output["result"].get("vision", ""),
+        "strategic_axes": output["result"].get("strategic_axes", []),
     }
 
 
 def coo_node(state: WorkflowState) -> dict:
-    result = run_coo_agent({
-        "vision": state["vision"],
-        "strategic_axes": state["strategic_axes"],
+    output = get_agent("coo").run({
+        "company_id": state.get("company_id", ""),
+        "payload": {
+            "vision": state["vision"],
+            "strategic_axes": state["strategic_axes"],
+        },
     })
-    return {"operational_plan": result.get("operational_plan", [])}
+    return {"operational_plan": output["result"].get("operational_plan", [])}
 
 
 # 3. Construction du graphe
